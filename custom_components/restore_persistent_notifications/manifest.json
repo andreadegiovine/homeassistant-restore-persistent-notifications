@@ -1,0 +1,12 @@
+{
+  "domain": "persist_persistent_notifications",
+  "name": "Persist Persistent Notifications",
+  "documentation": "https://github.com/slashback100/persist_persistent_notifications",
+  "issue_tracker": "https://github.com/slashback100/persist_persistent_notifications/issues",
+  "dependencies": ["persistent_notification"],
+  "config_flow": true,
+  "version": 1,
+  "codeowners": [
+    "@slashback"
+  ]
+}
