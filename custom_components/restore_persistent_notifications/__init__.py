@@ -8,6 +8,7 @@ from .const import (
         SENSOR
 )
 from homeassistant.components.persistent_notification import _async_get_or_create_notifications
+from homeassistant.components.persistent_notification import ( ATTR_CREATED_AT, ATTR_MESSAGE, ATTR_NOTIFICATION_ID, ATTR_TITLE )
 _LOGGER = logging.getLogger(__name__)
 
 def setup(hass, config):
@@ -42,9 +43,9 @@ async def async_setup_entry(hass, entry):
             for notif in notifications:
             #for pn_id in hass.states.async_entity_ids("persistent_notification"):
                 pn = notifications[notif]
-                _LOGGER.debug("Getting persistent notification "+pn["notification_id"])
-                _LOGGER.debug("Message is "+pn["message"])
-                await sensor.async_add_persistent_notification(pn["notification_id"], pn["title"], pn["message"])
+                _LOGGER.debug("Getting persistent notification "+pn[ATTR_NOTIFICATION_ID])
+                _LOGGER.debug("Message is "+pn[ATTR_MESSAGE])
+                await sensor.async_add_persistent_notification(pn[ATTR_NOTIFICATION_ID], pn[ATTR_TITLE], pn[ATTR_MESSAGE], pn[ATTR_CREATED_AT])
         except Exception as err:
           _LOGGER.error("Error is" + str(err))
           raise
@@ -53,18 +54,21 @@ async def async_setup_entry(hass, entry):
           raise
         _LOGGER.debug("persistent notification saved")
 
-    async def restore_notifications(event):
-        """ recreate the persistent notification based on the sensor attributes """
-        return
-        _LOGGER.debug("restoring persistent notification")
-        sensor = hass.data[DOMAIN][SENSOR_PLATFORM][SENSOR]
-        for pn in sensor.persistent_notifications:
-            service_data = {}
-            service_data["message"] = pn["message"]
-            if "title" in pn:
-                service_data["title"] = pn["title"]
-            #do not generate an id
-            await hass.services.async_call("persistent_notification", "create", service_data, blocking=False)
+    # async def restore_notifications(event):
+    #     """ recreate the persistent notification based on the sensor attributes """
+    #     _LOGGER.debug("restoring persistent notification")
+    #     sensor = hass.data[DOMAIN][SENSOR_PLATFORM][SENSOR]
+    #     for pn in sensor.persistent_notifications:
+    #         service_data = {}
+    #         service_data[ATTR_MESSAGE] = pn[ATTR_MESSAGE]
+    #         if ATTR_TITLE in pn:
+    #             service_data[ATTR_TITLE] = pn[ATTR_TITLE]
+    #         if ATTR_CREATED_AT in pn:
+    #             service_data[ATTR_CREATED_AT] = pn[ATTR_CREATED_AT]
+    #         if ATTR_NOTIFICATION_ID in pn:
+    #             service_data[ATTR_NOTIFICATION_ID] = pn[ATTR_NOTIFICATION_ID]
+    #         _LOGGER.debug("calling persistent notif create")
+    #         await hass.services.async_call("persistent_notification", "create", service_data, blocking=False)
 
 
     hass.bus.async_listen("homeassistant_stop", erase_and_save_notifications)
@@ -72,7 +76,7 @@ async def async_setup_entry(hass, entry):
     #also on the persistent_notification in case HA is not shut own gently
     #call erase_and_save and not just save to deal with dismiss & dismiss all
     hass.bus.async_listen("persistent_notifications_updated", erase_and_save_notifications)
-    hass.bus.async_listen("homeassistant_start", restore_notifications)
+    # hass.bus.async_listen("homeassistant_start", restore_notifications)
     #restore_notifications(None)
 
     return True

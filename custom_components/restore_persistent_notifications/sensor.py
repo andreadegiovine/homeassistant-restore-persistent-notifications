@@ -1,6 +1,7 @@
 from homeassistant.helpers.restore_state import RestoreEntity
 #from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.core import callback
+from homeassistant.components.persistent_notification import ( ATTR_CREATED_AT, ATTR_MESSAGE, ATTR_NOTIFICATION_ID, ATTR_TITLE )
 import asyncio
 import logging
 from .const import (
@@ -77,9 +78,13 @@ class PersistPersistentNotifications(RestoreEntity):
         #the creation of the notif is done in __init__ restore_notifications
         for pn in self.persistent_notifications:
             service_data = {}
-            service_data["message"] = pn["message"]
-            if "title" in pn:
-                service_data["title"] = pn["title"]
+            service_data[ATTR_MESSAGE] = pn[ATTR_MESSAGE]
+            if ATTR_TITLE in pn:
+                service_data[ATTR_TITLE] = pn[ATTR_TITLE]
+            if ATTR_CREATED_AT in pn:
+                service_data[ATTR_CREATED_AT] = pn[ATTR_CREATED_AT]
+            if ATTR_NOTIFICATION_ID in pn:
+                service_data[ATTR_NOTIFICATION_ID] = pn[ATTR_NOTIFICATION_ID]
             _LOGGER.debug("calling persistent notif create")
             await self.hass.services.async_call("persistent_notification", "create", service_data, blocking=False)
 
@@ -87,11 +92,11 @@ class PersistPersistentNotifications(RestoreEntity):
     def _schedule_immediate_update(self):
         self.async_schedule_update_ha_state(True)
 
-    async def async_add_persistent_notification(self, mess_id, title, message):
+    async def async_add_persistent_notification(self, notification_id, title, message, created_at):
         self._state += 1
         try:
             _LOGGER.debug("Adding persistent notification: " + message)
-            self.attr["persistent_messages"].append({"message": message, "id": mess_id, "title": title})
+            self.attr["persistent_messages"].append({ATTR_MESSAGE: message, ATTR_NOTIFICATION_ID: notification_id, ATTR_TITLE: title, ATTR_CREATED_AT: created_at})
         except Exception as err:
             _LOGGER.error("Oups, error is" + str(err))
 
@@ -106,14 +111,14 @@ class PersistPersistentNotifications(RestoreEntity):
 
     #unused
     async def is_new(self, notification):
-        if "notification_id" in notification is not None:
+        if ATTR_NOTIFICATION_ID in notification is not None:
             for notif in self.attr["persistent_messages"]:
                 #await asyncio.sleep(0)
-                if notif["notification_id"] == notification["notification_id"]:
+                if notif[ATTR_NOTIFICATION_ID] == notification[ATTR_NOTIFICATION_ID]:
                     return False
             return True
         for notif in self.attr["persistent_messages"]:
             #asyncio asyncio.sleep(0)
-            if notif["message"] == notification["message"]:
+            if notif[ATTR_MESSAGE] == notification[ATTR_MESSAGE]:
                 return False
         return True
