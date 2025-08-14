@@ -91,7 +91,7 @@ jobs:
       - name: Update manifest.json
         uses: jossef/action-set-json-field@v2.1
         with:
-          file: custom_components/restore_persistene_notifications/manifest.json
+          file: custom_components/restore_persistent_notifications/manifest.json
           field: version
           value: ${{ steps.tag-name.outputs.new_tag_name }}
 

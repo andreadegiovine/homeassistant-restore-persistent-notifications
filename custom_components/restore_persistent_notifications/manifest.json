@@ -1,12 +1,14 @@
 {
-  "domain": "persist_persistent_notifications",
-  "name": "Persist Persistent Notifications",
-  "documentation": "https://github.com/slashback100/persist_persistent_notifications",
-  "issue_tracker": "https://github.com/slashback100/persist_persistent_notifications/issues",
-  "dependencies": ["persistent_notification"],
-  "config_flow": true,
-  "version": 1,
+  "domain": "restore_persistent_notifications",
+  "name": "Restore Persistent Notifications",
   "codeowners": [
-    "@slashback"
-  ]
+    "@andreadegiovine"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "persistent_notification"
+  ],
+  "documentation": "https://github.com/andreadegiovine/homeassistant-restore-persistent-notifications",
+  "issue_tracker": "https://github.com/andreadegiovine/homeassistant-restore-persistent-notifications/issues",
+  "version": "2025.8.2"
 }

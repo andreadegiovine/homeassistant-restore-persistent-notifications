@@ -20,7 +20,7 @@ async def async_setup_entry(hass, entry):
     """Set up this component using YAML."""
     #init the sensor entity
     _LOGGER.debug("in __init__ : async_setup_entry")
-    hass.async_create_task(hass.config_entries.async_forward_entry_setup(entry, SENSOR_PLATFORM))
+    hass.async_create_task(hass.config_entries.async_forward_entry_setups(entry, [SENSOR_PLATFORM]))
 
     async def erase_and_save_notifications(event):
         try:
