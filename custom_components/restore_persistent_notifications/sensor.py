@@ -1,124 +1,116 @@
-from homeassistant.helpers.restore_state import RestoreEntity
-#from homeassistant.helpers.dispatcher import async_dispatcher_connect
-from homeassistant.core import callback
-from homeassistant.components.persistent_notification import ( ATTR_CREATED_AT, ATTR_MESSAGE, ATTR_NOTIFICATION_ID, ATTR_TITLE )
-import asyncio
 import logging
-from .const import (
-        DOMAIN,
-        SENSOR_PLATFORM,
-        SENSOR
-)
+
+from homeassistant.core import HomeAssistant
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.components.sensor import ( RestoreSensor, SensorEntityDescription )
+from homeassistant.components.persistent_notification import _async_get_or_create_notifications
+from homeassistant.components.persistent_notification import ( ATTR_CREATED_AT, ATTR_NOTIFICATION_ID )
+
+from .const import ( DOMAIN, NAME, SENSOR_PLATFORM, SENSOR_KEY, SENSOR_NOTIFICATIONS_ATTRIBUTE_KEY )
+
 _LOGGER = logging.getLogger(__name__)
 
-async def async_setup_platform(hass, _, async_add_entities, discovery_info=None):
-    """Create presence simulation entity defined in YAML and add them to HA."""
-    _LOGGER.debug("async_setup_platform")
-    if PersistPersistentNotifications.instances == 0:
-        async_add_entities([PersistPersistentNotifications(hass)], True)
+
+async def async_setup_entry(hass: HomeAssistant, config: ConfigEntry, async_add_entities):
+    sensors = []
+
+    description = SensorEntityDescription(
+        key=SENSOR_KEY,
+        name=SENSOR_KEY,
+        translation_key = SENSOR_KEY
+    )
+    sensors.extend([RestorePersistentNotifications(hass, description)])
+
+    async_add_entities(sensors)
 
 
-async def async_setup_entry(hass, config_entry, async_add_devices):
-    _LOGGER.debug("async_setup_entry")
-    """Create presence simulation entities defined in config_flow and add them to HA."""
-    if PersistPersistentNotifications.instances == 0:
-        async_add_devices([PersistPersistentNotifications(hass)], True)
+class RestorePersistentNotifications(RestoreSensor):
+    def __init__(self, hass, description):
+        self._hass = hass
 
-class PersistPersistentNotifications(RestoreEntity):
-    instances = 0
+        self.entity_description = description
+        self._attr_unique_id = description.key
+        self._attr_native_value = 0
+        self._available = True
+        self._attr_extra_state_attributes = {}
+        self._attr_translation_key = description.translation_key
+        self._attr_has_entity_name = False
 
-    def __init__(self, hass):
-        self.hass = hass
-        self.attr={}
-        self._state = "0"
-        PersistPersistentNotifications.instances += 1
-        self.attr["persistent_messages"] = []
 
     @property
-    def name(self):
-        return "Persist Persistent Notifications"
+    def device_info(self):
+        return {
+            "identifiers": {
+                (DOMAIN, NAME)
+            },
+            "name": NAME
+        }
 
-    @property
-    def state(self):
-        """Return the state of the switch"""
-        return self._state
-
-    @property
-    def extra_state_attributes(self):
-        """Returns the attributes list"""
-        return self.attr
-
-    async def async_update(self):
-        pass
-
-    def update(self):
-        pass
-
-    @property
-    def device_state_attributes(self):
-        """Returns the attributes list"""
-        return self.attr
 
     async def async_added_to_hass(self):
-        """When sensor is added to hassio."""
-        await super().async_added_to_hass()
-        prev_state = await self.async_get_last_state()
-        if prev_state is not None:
-            self._state = prev_state.state
-            if "persistent_messages" in prev_state.attributes:
-                self.attr = prev_state.as_dict()["attributes"]
+        _LOGGER.debug("async_added_to_hass")
 
-        _LOGGER.debug("restore state: %s", prev_state)
-        if DOMAIN not in self.hass.data:
-            self.hass.data[DOMAIN] = {}
-        if SENSOR_PLATFORM not in self.hass.data[DOMAIN]:
-            self.hass.data[DOMAIN][SENSOR_PLATFORM] = {}
-        self.hass.data[DOMAIN][SENSOR_PLATFORM][SENSOR] = self
+        restored_data = await self.async_get_last_state()
+        notifications = []
 
-        #the creation of the notif is done in __init__ restore_notifications
-        for pn in self.persistent_notifications:
-            service_data = {}
-            service_data[ATTR_MESSAGE] = pn[ATTR_MESSAGE]
-            if ATTR_TITLE in pn:
-                service_data[ATTR_TITLE] = pn[ATTR_TITLE]
-            if ATTR_CREATED_AT in pn:
-                service_data[ATTR_CREATED_AT] = pn[ATTR_CREATED_AT]
-            if ATTR_NOTIFICATION_ID in pn:
-                service_data[ATTR_NOTIFICATION_ID] = pn[ATTR_NOTIFICATION_ID]
-            _LOGGER.debug("calling persistent notif create")
-            await self.hass.services.async_call("persistent_notification", "create", service_data, blocking=False)
+        if restored_data:
+            self._attr_native_value = restored_data.state
+            if SENSOR_NOTIFICATIONS_ATTRIBUTE_KEY in restored_data.attributes:
+                notifications = restored_data.attributes[SENSOR_NOTIFICATIONS_ATTRIBUTE_KEY]
 
-    @callback
-    def _schedule_immediate_update(self):
-        self.async_schedule_update_ha_state(True)
+        self._attr_extra_state_attributes[SENSOR_NOTIFICATIONS_ATTRIBUTE_KEY] = notifications
 
-    async def async_add_persistent_notification(self, notification_id, title, message, created_at):
-        self._state += 1
-        try:
-            _LOGGER.debug("Adding persistent notification: " + message)
-            self.attr["persistent_messages"].append({ATTR_MESSAGE: message, ATTR_NOTIFICATION_ID: notification_id, ATTR_TITLE: title, ATTR_CREATED_AT: created_at})
-        except Exception as err:
-            _LOGGER.error("Oups, error is" + str(err))
+        if DOMAIN not in self._hass.data:
+            self._hass.data[DOMAIN] = {}
+        if SENSOR_PLATFORM not in self._hass.data[DOMAIN]:
+            self._hass.data[DOMAIN][SENSOR_PLATFORM] = {}
+        self._hass.data[DOMAIN][SENSOR_PLATFORM][SENSOR_KEY] = self
+
+        await self.restore_notifications()
 
 
-    @property
-    def persistent_notifications(self):
-        return self.attr["persistent_messages"]
+    async def save_notifications(self):
+        _LOGGER.debug("save_notifications")
 
-    def reset_persistent_notifications(self):
-        self.attr["persistent_messages"].clear()
-        self._state = 0
+        self._attr_extra_state_attributes[SENSOR_NOTIFICATIONS_ATTRIBUTE_KEY] = []
+        self._attr_native_value = 0
+        self.async_write_ha_state()
 
-    #unused
-    async def is_new(self, notification):
-        if ATTR_NOTIFICATION_ID in notification is not None:
-            for notif in self.attr["persistent_messages"]:
-                #await asyncio.sleep(0)
-                if notif[ATTR_NOTIFICATION_ID] == notification[ATTR_NOTIFICATION_ID]:
-                    return False
-            return True
-        for notif in self.attr["persistent_messages"]:
-            #asyncio asyncio.sleep(0)
-            if notif[ATTR_MESSAGE] == notification[ATTR_MESSAGE]:
-                return False
-        return True
+        notifications = _async_get_or_create_notifications(self._hass)
+        notifications_count = int(len(notifications))
+
+        _LOGGER.debug(f"Count: {notifications_count}")
+        _LOGGER.debug(f"Notifications: {notifications}")
+
+        if notifications_count > 0:
+            self._attr_native_value = notifications_count
+
+            for notify in notifications:
+                _LOGGER.debug(f"Save notification: {notify}")
+                self._attr_extra_state_attributes[SENSOR_NOTIFICATIONS_ATTRIBUTE_KEY].append(notifications[notify])
+
+            self.async_write_ha_state()
+
+
+    async def restore_notifications(self):
+        _LOGGER.debug("restore_notifications")
+
+        core_notifications = _async_get_or_create_notifications(self._hass)
+
+        notifications = self._attr_extra_state_attributes[SENSOR_NOTIFICATIONS_ATTRIBUTE_KEY]
+        notifications_count = int(len(notifications))
+
+        _LOGGER.debug(f"Count: {notifications_count}")
+        _LOGGER.debug(f"Notifications: {notifications}")
+
+        if notifications_count > 0:
+            try:
+                for notify in notifications:
+                    notify_data = notify.copy()
+                    _LOGGER.debug(f"Restore notification: {notify_data[ATTR_NOTIFICATION_ID]}")
+                    del notify_data[ATTR_CREATED_AT]
+                    await self.hass.services.async_call("persistent_notification", "create", notify_data, blocking=False)
+                    core_notifications[notify_data[ATTR_NOTIFICATION_ID]][ATTR_CREATED_AT] = notify[ATTR_CREATED_AT]
+
+            except Exception as e:
+                _LOGGER.error(f"Restore notifications error: {e}")
