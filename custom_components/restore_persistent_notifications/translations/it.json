@@ -2,10 +2,10 @@
   "entity": {
     "sensor": {
       "restore_persistent_notifications": {
-        "name": "Restore Persistent Notifications",
+        "name": "Ripristino notifiche persistenti",
         "state_attributes": {
           "notifications": {
-            "name": "Notifications"
+            "name": "Notifiche"
           }
         }
       }

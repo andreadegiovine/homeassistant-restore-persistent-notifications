@@ -1,6 +1,8 @@
-from homeassistant import config_entries
 import logging
-from .const import DOMAIN
+
+from homeassistant import config_entries
+
+from .const import ( DOMAIN, NAME )
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -15,5 +17,7 @@ class PersistPersistentNotificationConfigFlow(config_entries.ConfigFlow, domain=
         pass
 
     async def async_step_user(self, info=None):
-        return self.async_create_entry(title="Persist Persistent Notification", data={})
+        await self.async_set_unique_id(DOMAIN)
+        self._abort_if_unique_id_configured()
+        return self.async_create_entry(title=NAME, data={})
 
