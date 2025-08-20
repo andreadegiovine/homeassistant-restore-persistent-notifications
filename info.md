@@ -1,6 +1,26 @@
 # HomeAssistant - Restore Persistent Notification
-## Installation
+This integration use the **HomeAssistant core** to store [**persistent notifications**](https://www.home-assistant.io/integrations/persistent_notification/) in a sensor entity, when the system is rebooted the persistent notifications are restored.
 
+Persistent notifications are saved when the following actions are triggered:
+- persistent_notification.create
+- persistent_notification.dismiss
+- persistent_notification.dismiss_all
+- notify.persistent_notification
+
+When a persistent notification is retrieved, the following suffix is added after the **message** body:
+```yaml
+<!--- restored -->
+```
+The added suffix will not be shown in the HomeAssistant persistent notifications panel, but it is useful for automations or other operations such as:
+```yaml
+...
+  - condition: template
+    value_template: |-
+      {{ not (notify_message is search('<!--- restored -->')) }}
+...
+```
+
+## Installation
 ### Using [HACS](https://hacs.xyz/) 
 1. Go to HACS section;
 2. From the 3 dots menu (top right) click on **Add custom repository**;

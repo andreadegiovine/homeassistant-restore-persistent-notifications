@@ -7,3 +7,5 @@ SENSOR_PLATFORM = "sensor"
 SENSOR_KEY = "restore_persistent_notifications"
 
 SENSOR_NOTIFICATIONS_ATTRIBUTE_KEY = "notifications"
+
+RESTORED_MESSAGE_SUFFIX = "<!--- restored -->"
