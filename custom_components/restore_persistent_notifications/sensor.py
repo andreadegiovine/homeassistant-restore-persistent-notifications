@@ -6,7 +6,7 @@ from homeassistant.components.sensor import ( RestoreSensor, SensorEntityDescrip
 from homeassistant.components.persistent_notification import _async_get_or_create_notifications
 from homeassistant.components.persistent_notification import ( ATTR_CREATED_AT, ATTR_NOTIFICATION_ID, ATTR_MESSAGE )
 
-from .const import ( DOMAIN, NAME, SENSOR_PLATFORM, SENSOR_KEY, SENSOR_NOTIFICATIONS_ATTRIBUTE_KEY )
+from .const import ( DOMAIN, NAME, SENSOR_PLATFORM, SENSOR_KEY, SENSOR_NOTIFICATIONS_ATTRIBUTE_KEY, RESTORED_MESSAGE_SUFFIX )
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -109,7 +109,8 @@ class RestorePersistentNotifications(RestoreSensor):
                     notify_data = notify.copy()
                     _LOGGER.debug(f"Restore notification: {notify_data[ATTR_NOTIFICATION_ID]}")
                     del notify_data[ATTR_CREATED_AT]
-                    notify_data[ATTR_MESSAGE] = '<!--- voice disabled -->' + notify_data[ATTR_MESSAGE]
+                    if notify_data[ATTR_MESSAGE].find(RESTORED_MESSAGE_SUFFIX) == -1:
+                        notify_data[ATTR_MESSAGE] = notify_data[ATTR_MESSAGE] + RESTORED_MESSAGE_SUFFIX
                     await self.hass.services.async_call("persistent_notification", "create", notify_data, blocking=False)
                     core_notifications[notify_data[ATTR_NOTIFICATION_ID]][ATTR_CREATED_AT] = notify[ATTR_CREATED_AT]
 
