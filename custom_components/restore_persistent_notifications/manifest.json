@@ -5,6 +5,7 @@
     "@andreadegiovine"
   ],
   "config_flow": true,
+  "single_config_entry": true,
   "dependencies": [
     "persistent_notification"
   ],

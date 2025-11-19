@@ -1,6 +1,6 @@
 {
     "name": "Restore Persistent Notification",
-    "content_in_root": false,
     "render_readme": true,
-    "homeassistant": "2024.10.07"
+    "zip_release": true,
+    "filename": "restore_persistent_notifications.zip"
 }

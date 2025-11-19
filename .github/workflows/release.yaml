@@ -27,8 +27,11 @@ jobs:
           git fetch --tags
           
           # Fetch last tag
-          last_tag=$(git describe --match "*" --abbrev=0 --tags $(git rev-list --tags --max-count=1))
+          last_tag=$(git describe --match "*" --abbrev=0 --tags $(git rev-list --tags --max-count=1) | sed 's/^v//')
           echo "Last tag: $last_tag"
+          
+          last_release=$(git describe --match "*" --exclude "*-beta*" --abbrev=0 --tags $(git rev-list --tags --max-count=1))
+          echo "Last release: $last_release"
           
           current_year=$(date +%Y)
           current_month=$(date +%-m)
@@ -89,7 +92,7 @@ jobs:
           
           echo "New tag: $new_tag_name"
           echo "is_prerelease=${{ github.event.inputs.pre_release }}" >> $GITHUB_OUTPUT
-          echo "previous_tag_name=$last_tag" >> $GITHUB_OUTPUT
+          echo "previous_tag_name=$last_release" >> $GITHUB_OUTPUT
           echo "new_tag_name=$new_tag_name" >> $GITHUB_OUTPUT
           echo "new_tag_branch=$branch" >> $GITHUB_OUTPUT
           echo "branch_master=$branch_master" >> $GITHUB_OUTPUT
@@ -161,13 +164,13 @@ jobs:
       - name: Update master
         if: ${{ steps.tag-name.outputs.new_tag_branch == steps.tag-name.outputs.branch_master }}
         run: |
-            git fetch
-            git checkout ${{ steps.tag-name.outputs.branch_develop }}
-            git pull
-            git checkout ${{ steps.tag-name.outputs.branch_master }}
-            git pull
-            git merge ${{ steps.tag-name.outputs.branch_develop }} --strategy-option theirs
-            git push
+          git fetch
+          git checkout ${{ steps.tag-name.outputs.branch_develop }}
+          git pull
+          git checkout ${{ steps.tag-name.outputs.branch_master }}
+          git pull
+          git merge ${{ steps.tag-name.outputs.branch_develop }} --strategy-option theirs
+          git push
 
       - name: Create release
         uses: softprops/action-gh-release@v2
@@ -179,3 +182,17 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generate_release_notes: false
           body: ${{ steps.release-notes.outputs.notes }}
+
+      - name: "Create zip"
+        run: |
+          git fetch
+          git checkout ${{ steps.tag-name.outputs.branch_develop }}
+          git pull
+          cd "${{ github.workspace }}/custom_components/restore_persistent_notifications"
+          zip "${{ github.workspace }}/restore_persistent_notifications.zip" -r ./
+
+      - name: "Add zip to release"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ steps.tag-name.outputs.new_tag_name }} "${{ github.workspace }}/restore_persistent_notifications.zip"
