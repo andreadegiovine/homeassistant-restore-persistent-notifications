@@ -5,12 +5,12 @@
     "@andreadegiovine"
   ],
   "config_flow": true,
-  "single_config_entry": true,
   "dependencies": [
     "persistent_notification"
   ],
   "documentation": "https://github.com/andreadegiovine/homeassistant-restore-persistent-notifications",
   "iot_class": "calculated",
   "issue_tracker": "https://github.com/andreadegiovine/homeassistant-restore-persistent-notifications/issues",
+  "single_config_entry": true,
   "version": "2025.8.6"
 }
