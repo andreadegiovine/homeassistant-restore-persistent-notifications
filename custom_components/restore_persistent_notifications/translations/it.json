@@ -1,4 +1,11 @@
 {
+  "config": {
+    "step": {
+      "user": {
+        "description": "Questo dispositivo serve solo a memorizzare i dati per il recupero"
+      }
+    }
+  },
   "entity": {
     "sensor": {
       "restore_persistent_notifications": {
