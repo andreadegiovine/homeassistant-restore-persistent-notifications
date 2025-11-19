@@ -1,10 +1,6 @@
 {
   "config": {
-    "step": {
-      "user": {
-        "description": "This device is only for storing data for recovery"
-      }
-    }
+    "step": {}
   },
   "entity": {
     "sensor": {
