@@ -153,25 +153,22 @@ jobs:
             done
           )
 
-          set -x
-
-          notes="## What's Changed
-          $changes"
-
-          if ! ${{ steps.tag-name.outputs.is_prerelease }}; then
-            notes="$notes
-            
-            
-          **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ steps.tag-name.outputs.previous_tag_name }}...${{ steps.tag-name.outputs.new_tag_name }}
-          
-          
-          ## Support the project
-          ${{ steps.support.outputs.section }}
-          fi
-          
-          echo "$notes"
-
-          printf "%s" "$notes" > notes.txt
+          {
+            echo "## What's Changed"
+            echo
+            echo "$changes"
+            if ! ${{ steps.tag-name.outputs.is_prerelease }}; then
+              echo
+              echo
+              echo
+              echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ steps.tag-name.outputs.previous_tag_name }}...${{ steps.tag-name.outputs.new_tag_name }}"
+              echo
+              echo
+              echo
+              echo "## Support the project"
+              echo "${{ steps.support.outputs.section }}"
+            fi
+          } > notes.txt
 
           {
             echo "notes<<EOF"
