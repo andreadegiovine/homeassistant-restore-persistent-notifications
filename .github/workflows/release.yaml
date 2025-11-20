@@ -153,6 +153,8 @@ jobs:
             done
           )
 
+          set -x
+
           notes="## What's Changed
           $changes"
 
