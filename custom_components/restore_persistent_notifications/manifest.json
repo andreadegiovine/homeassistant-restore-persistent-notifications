@@ -9,6 +9,8 @@
     "persistent_notification"
   ],
   "documentation": "https://github.com/andreadegiovine/homeassistant-restore-persistent-notifications",
+  "iot_class": "calculated",
   "issue_tracker": "https://github.com/andreadegiovine/homeassistant-restore-persistent-notifications/issues",
-  "version": "2025.8.6"
+  "single_config_entry": true,
+  "version": "2025.11.1"
 }

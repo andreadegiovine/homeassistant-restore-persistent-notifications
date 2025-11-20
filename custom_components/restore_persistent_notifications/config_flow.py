@@ -6,7 +6,7 @@ from .const import ( DOMAIN, NAME )
 
 _LOGGER = logging.getLogger(__name__)
 
-class PersistPersistentNotificationConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+class RestorePersistentNotificationsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
     async def async_create_flow(handler, context, data):
         """Create flow."""

@@ -1,4 +1,7 @@
 {
+  "config": {
+    "step": {}
+  },
   "entity": {
     "sensor": {
       "restore_persistent_notifications": {

@@ -1,5 +1,6 @@
 {
   "config": {
+    "step": {},
     "error": {
       "already_configured": "[%key:common::config_flow::abort::already_configured_device%]",
       "already_in_progress": "[%key:common::config_flow::abort::already_in_progress%]"
@@ -7,6 +8,18 @@
     "abort": {
       "already_configured": "[%key:common::config_flow::abort::already_configured_device%]",
       "already_in_progress": "[%key:common::config_flow::abort::already_in_progress%]"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "restore_persistent_notifications": {
+        "name": "Restore Persistent Notifications",
+        "state_attributes": {
+          "notifications": {
+            "name": "Notifications"
+          }
+        }
+      }
     }
   }
 }
