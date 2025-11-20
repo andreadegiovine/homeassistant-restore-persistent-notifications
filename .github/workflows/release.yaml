@@ -168,9 +168,14 @@ jobs:
           fi
           
           echo "$notes"
+
+          cat > notes.txt <<EOF
+          $notes
+          EOF
+
           
           echo "notes<<EOF" >> $GITHUB_OUTPUT
-          echo "$notes" >> $GITHUB_OUTPUT
+          cat notes.txt >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Update master
