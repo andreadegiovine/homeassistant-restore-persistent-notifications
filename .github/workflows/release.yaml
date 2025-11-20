@@ -157,10 +157,10 @@ jobs:
             echo "## What's Changed"
             if [ -n "$changes" ]; then
               echo "$changes"
+              echo
+              echo
             fi
             if ! ${{ steps.tag-name.outputs.is_prerelease }}; then
-              echo
-              echo
               echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ steps.tag-name.outputs.previous_tag_name }}...${{ steps.tag-name.outputs.new_tag_name }}"
               echo
               echo
