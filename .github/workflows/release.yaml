@@ -169,14 +169,13 @@ jobs:
           
           echo "$notes"
 
-          cat > notes.txt <<EOF
-          $notes
-          EOF
+          printf "%s" "$notes" > notes.txt
 
-          
-          echo "notes<<EOF" >> $GITHUB_OUTPUT
-          cat notes.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          {
+            echo "notes<<EOF"
+            cat notes.txt
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
 
       - name: Update master
         if: ${{ steps.tag-name.outputs.new_tag_branch == steps.tag-name.outputs.branch_master }}
