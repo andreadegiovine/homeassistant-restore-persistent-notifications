@@ -42,6 +42,31 @@ The added suffix will not be shown in the HomeAssistant persistent notifications
 </details>
 
 ## Support the project
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/andreatito)
+**The latest heroes who believe in this project** 👇
 
+**🏆 5 beers**  
+Someone  
+exi  
+Philipp B. / tamcore  
+<sub>*and other heroes*</sub>
+
+**🥈 3 beers**  
+John Woertman  
+Pekka  
+Gerhard  
+<sub>*and other heroes*</sub>
+
+**🥉 2 beers**  
+Grosi001  
+ryhaberecht  
+Tizian  
+
+**⭐ 1 beers**  
+teknohead  
+@bgoncal2  
+Max  
+<sub>*and other heroes*</sub>
+
+### Want to join the Club?
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/andreatito)  
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W11C9QJ7)
