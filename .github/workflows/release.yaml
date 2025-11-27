@@ -23,6 +23,9 @@ jobs:
       - name: Get tag name
         id: tag-name
         run: |
+          # Integration slug
+          integration_slug="restore_persistent_notifications"
+          
           # Fetch all tags
           git fetch --tags
           
@@ -91,6 +94,7 @@ jobs:
           fi
           
           echo "New tag: $new_tag_name"
+          echo "integration_slug=$integration_slug" >> $GITHUB_OUTPUT
           echo "is_prerelease=${{ github.event.inputs.pre_release }}" >> $GITHUB_OUTPUT
           echo "previous_tag_name=$last_release" >> $GITHUB_OUTPUT
           echo "new_tag_name=$new_tag_name" >> $GITHUB_OUTPUT
@@ -101,19 +105,88 @@ jobs:
       - name: Update manifest.json
         uses: jossef/action-set-json-field@v2.1
         with:
-          file: custom_components/restore_persistent_notifications/manifest.json
+          file: custom_components/${{ steps.tag-name.outputs.integration_slug }}/manifest.json
           field: version
           value: ${{ steps.tag-name.outputs.new_tag_name }}
 
-      - name: Commit manifest.json
+      - name: Update Support section in README.md
+        run: |
+          set -e
+
+          echo "Cloning supporters repo..."
+          git clone https://github.com/andreadegiovine/supporters.git supporters_repo
+
+          echo "Reading supporter files..."
+          declare -A supporters_map
+
+          for file in supporters_repo/*.txt; do
+            beers=$(basename "$file" .txt)
+            supporters_map[$beers]="$file"
+          done
+
+          sorted_beers=$(printf "%s\n" "${!supporters_map[@]}" | sort -nr)
+
+          tmp_section="new_support_section.txt"
+          echo "**The latest heroes who believe in this project** 👇" >> "$tmp_section"
+          echo "" >> "$tmp_section"
+
+          index=0
+
+          for beer in $sorted_beers; do
+            file=${supporters_map[$beer]}
+            mapfile -t lines < "$file"
+          
+            if [ $index -eq 0 ]; then
+              emoji="🏆"
+            elif [ $index -eq 1 ]; then
+              emoji="🥈"
+            elif [ $index -eq 2 ]; then
+              emoji="🥉"
+            else
+              emoji="⭐"
+            fi
+
+            echo "**${emoji} ${beer} beers**  " >> "$tmp_section"
+          
+            count=${#lines[@]}
+            limit=$(( count < 3 ? count : 3 ))
+
+            for ((i=0; i<limit; i++)); do
+              echo "${lines[$i]}  " >> "$tmp_section"
+            done
+          
+            if [ "$count" -gt 3 ]; then
+              echo "<sub>*and other heroes*</sub>" >> "$tmp_section"
+            fi
+
+            echo "" >> "$tmp_section"
+            index=$((index+1))
+          done
+          
+          cat << 'EOF' >> "$tmp_section"
+          ### Want to join the Club?
+          [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/andreatito)  
+          [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W11C9QJ7)
+          EOF
+          
+          sed -n '1,/^## Support the project/p' README.md > README.tmp
+          cat "$tmp_section" >> README.tmp
+          mv -f README.tmp README.md
+          rm -rf supporters_repo
+          rm "$tmp_section"
+
+      - name: Copy README.md to info.md
+        run: cp -f README.md info.md
+
+      - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "Update manifest.json version to ${{ steps.tag-name.outputs.new_tag_name }}"
+          git commit -m "Update manifest.json - ${{ steps.tag-name.outputs.new_tag_name }}"
           git tag ${{ steps.tag-name.outputs.new_tag_name }}
 
-      - name: Push manifest.json
+      - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -128,7 +201,7 @@ jobs:
             /^## / && capture {capture=0}
             capture
           ' README.md > support_section.txt
-      
+
           echo "section<<EOF" >> $GITHUB_OUTPUT
           cat support_section.txt >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -202,11 +275,11 @@ jobs:
           git fetch
           git checkout ${{ steps.tag-name.outputs.branch_develop }}
           git pull
-          cd "${{ github.workspace }}/custom_components/restore_persistent_notifications"
-          zip "${{ github.workspace }}/restore_persistent_notifications.zip" -r ./
+          cd "${{ github.workspace }}/custom_components/${{ steps.tag-name.outputs.integration_slug }}"
+          zip "${{ github.workspace }}/${{ steps.tag-name.outputs.integration_slug }}.zip" -r ./
 
       - name: "Add zip to release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload ${{ steps.tag-name.outputs.new_tag_name }} "${{ github.workspace }}/restore_persistent_notifications.zip"
+          gh release upload ${{ steps.tag-name.outputs.new_tag_name }} "${{ github.workspace }}/${{ steps.tag-name.outputs.integration_slug }}.zip"
