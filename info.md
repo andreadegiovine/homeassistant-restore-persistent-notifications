@@ -1,4 +1,5 @@
 # HomeAssistant - Restore Persistent Notification
+[![Active installations](https://img.shields.io/badge/active_installations-17-%2318BCF2?style=for-the-badge&logo=homeassistant)](#)  
 [![Last version](https://img.shields.io/github/v/release/andreadegiovine/homeassistant-restore-persistent-notifications?style=for-the-badge&logo=github&label=last%20version&color=green)](#)
 
 - [Features](#features)
