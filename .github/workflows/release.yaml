@@ -187,7 +187,7 @@ jobs:
           hacs_response=$(curl -s https://data-v2.hacs.xyz/integration/data.json)
           
           # Extract downloads count for this integration
-          new_installations=$(echo "$hacs_response" | jq -r --arg id "${{ steps.tag-name.outputs.hacs_id }}" '.[] | select(.hacs_id == $id) | .downloads' 2>/dev/null || echo "")
+          new_installations=$(echo "$hacs_response" | jq -r --arg id "${{ steps.tag-name.outputs.hacs_id }}" '.[$id].downloads' 2>/dev/null || echo "")
           
           if [ -z "$new_installations" ] || [ "$new_installations" = "null" ]; then
             echo "Could not fetch installations count from HACS"
