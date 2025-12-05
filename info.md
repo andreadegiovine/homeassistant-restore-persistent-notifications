@@ -1,4 +1,6 @@
 # HomeAssistant - Restore Persistent Notification
+[![Last version](https://img.shields.io/github/v/release/andreadegiovine/homeassistant-restore-persistent-notifications?style=for-the-badge&logo=github&label=last%20version&color=green)](#)
+
 - [Features](#features)
 - [Installation](#installation)
 
@@ -45,15 +47,15 @@ The added suffix will not be shown in the HomeAssistant persistent notifications
 **The latest heroes who believe in this project** 👇
 
 **🏆 5 beers**  
+Andy  
+Kenneth Henderick  
 Someone  
-exi  
-Philipp B. / tamcore  
 <sub>*and other heroes*</sub>
 
 **🥈 3 beers**  
+Sven  
+Martijn  
 John Woertman  
-Pekka  
-Gerhard  
 <sub>*and other heroes*</sub>
 
 **🥉 2 beers**  
@@ -62,9 +64,9 @@ ryhaberecht
 Tizian  
 
 **⭐ 1 beers**  
-teknohead  
-@bgoncal2  
-Max  
+Thomas  
+@hengelha  
+speedmops  
 <sub>*and other heroes*</sub>
 
 ### Want to join the Club?
