@@ -223,13 +223,7 @@ jobs:
             # Compare and update if new count is higher
             if [ "$new_installations" -gt "$current_installations" ]; then
               echo "Updating installations count from $current_installations to $new_installations"
-              
-              # Escape special characters for sed
-              escaped_old=$(echo "$current_line" | sed 's/[&/\]/\\&/g')
-              new_line="[![Active installations](https://img.shields.io/badge/active_installations-${new_installations}-%2318BCF2?style=for-the-badge&logo=homeassistant)](#)  "
-              escaped_new=$(echo "$new_line" | sed 's/[&/\]/\\&/g')
-              
-              sed -i "0,/${escaped_old}/{s/${escaped_old}/${escaped_new}/}" README.md
+              sed -E -i "s/(active_installations-)[0-9]+/\1${new_installations}/" README.md
               echo "Active installations line updated"
             else
               echo "New count is not higher than current count, skipping update"
