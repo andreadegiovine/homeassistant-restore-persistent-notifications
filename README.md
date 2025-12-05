@@ -1,4 +1,6 @@
 # HomeAssistant - Restore Persistent Notification
+[![Last version](https://img.shields.io/github/v/release/andreadegiovine/homeassistant-restore-persistent-notifications?style=for-the-badge&logo=github&label=last%20version&color=green)](#)
+
 - [Features](#features)
 - [Installation](#installation)
 
