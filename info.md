@@ -57,9 +57,9 @@ Kenneth Henderick
 <sub>*and other heroes*</sub>
 
 **🥉 3 BEERS**  
+Bernard H  
 Thomas H.  
 Al  
-Matze (Matthias)  
 <sub>*and other heroes*</sub>
 
 **⭐ 2 BEERS**  
