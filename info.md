@@ -48,6 +48,7 @@ The added suffix will not be shown in the HomeAssistant persistent notifications
 **The latest heroes who believe in this project** 👇
 
 **🏆 10 BEERS**  
+Andrea Donno  
 Fabian  
 
 **🥈 5 BEERS**  
