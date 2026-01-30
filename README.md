@@ -58,15 +58,15 @@ Andy
 <sub>*and other heroes*</sub>
 
 **🥉 3 BEERS**  
+trobete  
+Heiner Engelhardt  
 Mickeybyte  
-Bernard H  
-Thomas H.  
 <sub>*and other heroes*</sub>
 
 **⭐ 2 BEERS**  
+Floribert M  
 Liam  
 b2un0  
-Grosi001  
 <sub>*and other heroes*</sub>
 
 **⭐ 1 BEERS**  
