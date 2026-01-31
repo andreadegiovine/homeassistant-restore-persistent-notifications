@@ -52,15 +52,15 @@ Andrea Donno
 Fabian  
 
 **🥈 5 BEERS**  
+Zauberertz  
 2102Michael  
 @LittonPaul  
-Andy  
 <sub>*and other heroes*</sub>
 
 **🥉 3 BEERS**  
+Martin the Biuilder  
 trobete  
 Heiner Engelhardt  
-Mickeybyte  
 <sub>*and other heroes*</sub>
 
 **⭐ 2 BEERS**  
