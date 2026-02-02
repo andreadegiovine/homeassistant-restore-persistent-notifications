@@ -70,9 +70,9 @@ Liam
 <sub>*and other heroes*</sub>
 
 **⭐ 1 BEERS**  
+Battiegoal  
 Mickael RD  
 Olivier  
-Krobi  
 <sub>*and other heroes*</sub>
 
 ### Want to join the Club?
