@@ -70,9 +70,9 @@ mggevaer
 <sub>*and other heroes*</sub>
 
 **⭐ 1 BEERS**  
+Christof  
 Luke  
 Schredder51  
-Grana  
 <sub>*and other heroes*</sub>
 
 ### Want to join the Club?
