@@ -58,9 +58,9 @@ Toine T
 <sub>*and other heroes*</sub>
 
 **🥉 3 BEERS**  
+SupaChris  
 DrBrochmann  
 Jeroen  
-Marco  
 <sub>*and other heroes*</sub>
 
 **⭐ 2 BEERS**  
