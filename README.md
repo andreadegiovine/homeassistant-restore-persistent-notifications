@@ -52,9 +52,9 @@ Andrea Donno
 Fabian  
 
 **🥈 5 BEERS**  
+Dieter  
 SA Energy  
 Phil S  
-Toine T  
 <sub>*and other heroes*</sub>
 
 **🥉 3 BEERS**  
