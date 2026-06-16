@@ -70,9 +70,9 @@ Somebody
 <sub>*and other heroes*</sub>
 
 **⭐ 1 BEERS**  
+Somebody  
 Someone  
 Giuliano  
-guimi  
 <sub>*and other heroes*</sub>
 
 ### Want to join the Club?
