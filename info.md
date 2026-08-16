@@ -47,18 +47,21 @@ The added suffix will not be shown in the HomeAssistant persistent notifications
 ## Support the project
 **The latest heroes who believe in this project** 👇
 
-**🏆 10 BEERS**  
+**🏆 MONTHLY BEERS**  
+Harald  
+
+**🥈 10 BEERS**  
 Rüdiger  
 Andrea Donno  
 Fabian  
 
-**🥈 5 BEERS**  
+**🥉 5 BEERS**  
 Someone  
 Dieter  
 SA Energy  
 <sub>*and other heroes*</sub>
 
-**🥉 3 BEERS**  
+**⭐ 3 BEERS**  
 Hubert  
 Someone  
 Mark  
