@@ -68,15 +68,15 @@ Mark
 <sub>*and other heroes*</sub>
 
 **⭐ 2 BEERS**  
+Ludvik  
 Liam  
 Kristian  
-Dave  
 <sub>*and other heroes*</sub>
 
 **⭐ 1 BEERS**  
+elektrofc@gmx.de  
+Mathi  
 Tarboeuf  
-Harald  
-Someone  
 <sub>*and other heroes*</sub>
 
 ### Want to join the Club?
