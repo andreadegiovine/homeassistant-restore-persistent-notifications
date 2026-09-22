@@ -61,6 +61,9 @@ Dieter
 SA Energy  
 <sub>*and other heroes*</sub>
 
+**⭐ 4 BEERS**  
+Al  
+
 **⭐ 3 BEERS**  
 Hubert  
 Someone  
@@ -74,9 +77,9 @@ Kristian
 <sub>*and other heroes*</sub>
 
 **⭐ 1 BEERS**  
+RapH  
 elektrofc@gmx.de  
 Mathi  
-Tarboeuf  
 <sub>*and other heroes*</sub>
 
 ### Want to join the Club?
