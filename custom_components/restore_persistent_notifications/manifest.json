@@ -9,6 +9,7 @@
     "persistent_notification"
   ],
   "documentation": "https://github.com/andreadegiovine/homeassistant-restore-persistent-notifications",
+  "integration_type": "service",
   "iot_class": "calculated",
   "issue_tracker": "https://github.com/andreadegiovine/homeassistant-restore-persistent-notifications/issues",
   "single_config_entry": true,

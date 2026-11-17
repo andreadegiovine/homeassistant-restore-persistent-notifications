@@ -8,11 +8,10 @@
 This integration use the **HomeAssistant core** to store [**persistent notifications**](https://www.home-assistant.io/integrations/persistent_notification/) in a sensor entity, when the system is rebooted the persistent notifications are restored.
 
 ## Features
-Persistent notifications are saved when the following actions are triggered:
-- persistent_notification.create
-- persistent_notification.dismiss
-- persistent_notification.dismiss_all
-- notify.persistent_notification
+Persistent notifications are saved every time they change, whatever the source:
+- persistent_notification.create / dismiss / dismiss_all actions
+- notify.persistent_notification action
+- notifications created or dismissed directly by other integrations or from the frontend
 
 When a persistent notification is retrieved, the following suffix is added after the **message** body:
 ```yaml
