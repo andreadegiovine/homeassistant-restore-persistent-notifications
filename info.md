@@ -1,15 +1,17 @@
 # HomeAssistant - Restore Persistent Notification
+[![Active installations](https://img.shields.io/badge/active_installations-301-%2318BCF2?style=for-the-badge&logo=homeassistant)](#)  
+[![Last version](https://img.shields.io/github/v/release/andreadegiovine/homeassistant-restore-persistent-notifications?style=for-the-badge&logo=github&label=last%20version&color=green)](#)
+
 - [Features](#features)
 - [Installation](#installation)
 
 This integration use the **HomeAssistant core** to store [**persistent notifications**](https://www.home-assistant.io/integrations/persistent_notification/) in a sensor entity, when the system is rebooted the persistent notifications are restored.
 
 ## Features
-Persistent notifications are saved when the following actions are triggered:
-- persistent_notification.create
-- persistent_notification.dismiss
-- persistent_notification.dismiss_all
-- notify.persistent_notification
+Persistent notifications are saved every time they change, whatever the source:
+- persistent_notification.create / dismiss / dismiss_all actions
+- notify.persistent_notification action
+- notifications created or dismissed directly by other integrations or from the frontend
 
 When a persistent notification is retrieved, the following suffix is added after the **message** body:
 ```yaml
@@ -44,27 +46,39 @@ The added suffix will not be shown in the HomeAssistant persistent notifications
 ## Support the project
 **The latest heroes who believe in this project** 👇
 
-**🏆 5 beers**  
+**🏆 MONTHLY BEERS**  
+Harald  
+
+**🥈 10 BEERS**  
+Rüdiger  
+Andrea Donno  
+Fabian  
+
+**🥉 5 BEERS**  
 Someone  
-exi  
-Philipp B. / tamcore  
+Dieter  
+SA Energy  
 <sub>*and other heroes*</sub>
 
-**🥈 3 beers**  
-John Woertman  
-Pekka  
-Gerhard  
+**⭐ 4 BEERS**  
+Al  
+
+**⭐ 3 BEERS**  
+Adam Szczerba  
+Hubert  
+Someone  
 <sub>*and other heroes*</sub>
 
-**🥉 2 beers**  
-Grosi001  
-ryhaberecht  
-Tizian  
+**⭐ 2 BEERS**  
+Ludvik  
+Liam  
+Kristian  
+<sub>*and other heroes*</sub>
 
-**⭐ 1 beers**  
-teknohead  
-@bgoncal2  
-Max  
+**⭐ 1 BEERS**  
+Harald  
+Someone  
+Fritz  
 <sub>*and other heroes*</sub>
 
 ### Want to join the Club?
